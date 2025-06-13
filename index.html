@@ -72,6 +72,15 @@
       <label for="number-of-pages">Number of Pages (even number):</label>
       <input type="number" id="number-of-pages" min="2" step="2" oninput="checkEvenPages()">
       <p id="pages-warning" class="warning"></p>
+
+       <label for="piece-height">Piece Height (inches):</label>
+      <input type="number" id="piece-height" step="0.01" oninput="calculatePieces()">
+
+      <label for="piece-width">Piece Width (inches):</label>
+      <input type="number" id="piece-width" step="0.01" oninput="calculatePieces()">
+
+      <p id="pieces-result"></p>
+
       
       <label for="paper-options">Paper Options:</label>
       <select id="paper-options">
@@ -117,13 +126,6 @@
       <input type="number" id="piece-width" step="0.01" oninput="calculatePieces()">
 
       <p id="pieces-result"></p>
-
-      <label for="quantity">Quantity:</label>
-      <input type="number" id="quantity" min="1">
-
-      <label for="number-of-pages">Number of Pages (even number):</label>
-      <input type="number" id="number-of-pages" min="2" step="2" oninput="checkEvenPages()">
-      <p id="pages-warning" class="warning"></p>
 
       <input type="submit" value="Estimate" onclick="calculateCost(event)">
     </form>
