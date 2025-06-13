@@ -36,8 +36,7 @@
     }
     input[type="number"],
     select {
-      width: 100%;
-      padding;
+           margin-top: 5px;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
@@ -147,12 +146,12 @@
       if (printSide === 'two-side') printCost *= 2;
 
       let binderyCost = 0;
-      document.querySelectorAll('input[name=\"bindery\"]:checked').forEach(cb => {
+      document.querySelectorAll('input[name="bindery"]:checked').forEach(cb => {
         binderyCost += parseFloat(cb.value);
       });
 
       let finishingCost = 0;
-      document.querySelectorAll('input[name=\"finishing\"]:checked').forEach(cb => {
+      document.querySelectorAll('input[name="finishing"]:checked').forEach(cb => {
         finishingCost += parseFloat(cb.value);
       });
 
@@ -161,8 +160,17 @@
         return;
       }
 
+      const height = parseFloat(document.getElementById('piece-height').value);
+      const width = parseFloat(document.getElementById('piece-width').value);
+      const piecesPerSheet = Math.floor(13 / height) * Math.floor(19 / width);
+      const totalSheets = Math.ceil(quantity / piecesPerSheet);
+
       const total = (paperCost + printCost + binderyCost + finishingCost) * quantity + deliveryCost;
-      document.getElementById('cost-result').innerText = 'Total Estimated Cost: $' + total.toFixed(2);
+      document.getElementById('cost-result').innerHTML = `
+        Total Estimated Cost: $${total.toFixed(2)}<br>
+        Imposition: ${piecesPerSheet} up on a 13x19 sheet<br>
+        Total Press Sheets Required: ${totalSheets}
+      `;
     }
   </script>
 </body>
