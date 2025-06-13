@@ -148,9 +148,6 @@
       }
     }
 
-const totalSheets = Math.ceil((quantity * (numberOfPages / 2)) / piecesPerSheet);
-const total = (paperCost + printCost + binderyCost + finishingCost) * quantity * (numberOfPages / 2) + deliveryCost;
-
     function calculateCost(event) {
       event.preventDefault();
 
@@ -187,7 +184,7 @@ const total = (paperCost + printCost + binderyCost + finishingCost) * quantity *
       const height = parseFloat(document.getElementById('piece-height').value);
       const width = parseFloat(document.getElementById('piece-width').value);
       const piecesPerSheet = Math.floor(13 / height) * Math.floor(19 / width);
-      const totalSheets = Math.ceil((quantity * numberOfPages) / piecesPerSheet);
+      const totalSheets = Math.ceil((quantity * numberOfPages/2) / piecesPerSheet);
 
       const total = (paperCost + printCost + binderyCost + finishingCost) * quantity * numberOfPages + deliveryCost;
       document.getElementById('cost-result').innerHTML = `
