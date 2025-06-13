@@ -22,21 +22,14 @@
       padding: 20px 0;
       text-align: center;
       border-bottom: 3px solid #77aaff;
-    }
-    form {
-      background: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    label {
-      display: block;
-      margin-top: 15px;
+    15px;
       font-weight: bold;
     }
     input[type="number"],
     select {
-           margin-top: 5px;
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
@@ -60,6 +53,10 @@
       padding: 20px;
       margin-top: 20px;
       border-radius: 5px;
+    }
+    .warning {
+      color: red;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -116,6 +113,10 @@
       <label for="quantity">Quantity:</label>
       <input type="number" id="quantity" min="1">
 
+      <label for="number-of-pages">Number of Pages (even number):</label>
+      <input type="number" id="number-of-pages" min="2" step="2" oninput="checkEvenPages()">
+      <p id="pages-warning" class="warning"></p>
+
       <input type="submit" value="Estimate" onclick="calculateCost(event)">
     </form>
 
@@ -134,13 +135,30 @@
       }
     }
 
+    function checkEvenPages() {
+      const pages = parseInt(document.getElementById('number-of-pages').value);
+      const warning = document.getElementById('pages-warning');
+      if (pages % 2 !== 0) {
+        warning.innerText = 'Number of pages must be an even number.';
+      } else {
+        warning.innerText = '';
+      }
+    }
+
     function calculateCost(event) {
       event.preventDefault();
+
       const paperCost = parseFloat(document.getElementById('paper-options').value);
       const printOption = document.getElementById('print-options').value;
       const printSide = document.getElementById('print-side').value;
       const quantity = parseInt(document.getElementById('quantity').value);
       const deliveryCost = parseFloat(document.getElementById('delivery-options').value);
+      const numberOfPages = parseInt(document.getElementById('number-of-pages').value);
+
+      if (numberOfPages % 2 !== 0) {
+        document.getElementById('pages-warning').innerText = 'Number of pages must be an even number.';
+        return;
+      }
 
       let printCost = printOption === 'full-color' ? 0.10 : 0.05;
       if (printSide === 'two-side') printCost *= 2;
@@ -163,9 +181,9 @@
       const height = parseFloat(document.getElementById('piece-height').value);
       const width = parseFloat(document.getElementById('piece-width').value);
       const piecesPerSheet = Math.floor(13 / height) * Math.floor(19 / width);
-      const totalSheets = Math.ceil(quantity / piecesPerSheet);
+      const totalSheets = Math.ceil((quantity * numberOfPages) / piecesPerSheet);
 
-      const total = (paperCost + printCost + binderyCost + finishingCost) * quantity + deliveryCost;
+      const total = (paperCost + printCost + binderyCost + finishingCost) * quantity * numberOfPages + deliveryCost;
       document.getElementById('cost-result').innerHTML = `
         Total Estimated Cost: $${total.toFixed(2)}<br>
         Imposition: ${piecesPerSheet} up on a 13x19 sheet<br>
