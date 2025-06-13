@@ -148,6 +148,9 @@
       }
     }
 
+const totalSheets = Math.ceil((quantity * (numberOfPages / 2)) / piecesPerSheet);
+const total = (paperCost + printCost + binderyCost + finishingCost) * quantity * (numberOfPages / 2) + deliveryCost;
+
     function calculateCost(event) {
       event.preventDefault();
 
